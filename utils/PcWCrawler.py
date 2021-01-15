@@ -3,8 +3,9 @@ import sys
 sys.path.append('./utils/') # noqa
 from UrlCrawler import UrlCrawler # noqa
 from PDFDownloader import PDFDownloader # noqa
-from detailInfoCrawler import detailInfoCrawler
+from detailInfoCrawler import detailInfoCrawler # noqa
 from tqdm import tqdm # noqa
+
 
 class PcWCrawler:
     def __init__(self):
@@ -17,6 +18,7 @@ class PcWCrawler:
         self.detailInfoCrawler.crawlAllInfo()
         self.pdfDownloader.downloadAll()
         print("All crawlers finished.")
+
 
 if __name__ == '__main__':
     pcWCrawler = PcWCrawler()

@@ -53,15 +53,18 @@ class UrlCrawler:
         for i in range(0, 12):
             if i % 2 == 1:
                 continue
-            if i % 2 == 0 and status[i] is '0':
+            if i % 2 == 0 and status[i] == '0':
                 page = int(status[i + 1])
                 print("Part " + self.portalName[int((i + 1) / 2)] + " in progress, starting from page " + status[i + 1])
                 break
-            elif i % 2 == 0 and status[i] is '1':
+            elif i % 2 == 0 and status[i] == '1':
                 print("Part " + self.portalName[int((i + 1) / 2)] + " finished. Pass.")
 
         type = int((i + 1) / 2)
-        page = int(status[i + 1])
+        if i < 11:
+            page = int(status[i + 1])
+        else:
+            page = int(status[i])
         return type, page, status
         # with open("./progress", 'w') as f:
         #     for item in status:
@@ -132,7 +135,7 @@ class UrlCrawler:
     '''
     def crawlAll(self):
         type, page, status = self.getProgress()
-        if status[10] is '1':
+        if status[10] == '1':
             print('urlCrawl finished.')
             return
 
@@ -166,7 +169,6 @@ class UrlCrawler:
             page = 1
 
         print("Paper with code urls crawl finished.")
-
 
 
 if __name__ == '__main__':

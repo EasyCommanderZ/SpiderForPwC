@@ -5,6 +5,7 @@ from tqdm import tqdm
 
 import config
 
+
 class PDFDownloader():
     database = config.db
     collection = config.pdf_Collection
@@ -95,12 +96,13 @@ class PDFDownloader():
                 pdfurlSplit = pdfurl.split("/")
                 fileName = pdfurlSplit[len(pdfurlSplit) - 1]
                 print("Downloading: " + pdfurl + ", filename: " + fileName)
-                self.downloadFile(pdfurl, "../data/PDFs/" + fileName)
+                self.downloadFile(pdfurl, "./data/PDFs/" + fileName)
                 self.updateUrl(pdfurl, "/data/PDFs/" + fileName)
             except Exception as e:
                 print("Error in " + pdfurl + ", info:", e)
                 continue
         print("PDF downloading done")
+
 
 if __name__ == '__main__':
     pdfDownloader = PDFDownloader()
