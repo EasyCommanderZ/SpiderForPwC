@@ -1,6 +1,6 @@
 ### PaperWithCode
 
-PaperWithCode爬虫基于requests和beautifulsoup进行开发，能够爬取https://paperswithcode.com/上的论文资料，包括论文的标题、作者、摘要、发表时间、发表地址和官方代码地址，并且能够下载论文对应的PDF文件。
+PaperWithCode爬虫基于requests和beautifulsoup进行开发，能够爬取[Paper With Code](https://paperswithcode.com)上的论文资料，包括论文的标题、作者、摘要、发表时间、发表地址和官方代码地址，并且能够下载论文对应的PDF文件。
 
 #### 代码目录结构：
 
