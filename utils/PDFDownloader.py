@@ -1,9 +1,12 @@
 # coding : utf-8
+import time
+
 import pymongo
 import requests
 from tqdm import tqdm
 
 import config
+from utils.ClashControl import ClashControl
 
 
 class PDFDownloader():
@@ -20,6 +23,11 @@ class PDFDownloader():
                                           password=config.psw,
                                           authSource=self.database)
         self.pdfUrls = self.getPDFUrlsfromDB()
+        self.clashControl = ClashControl()
+        self.clash_proxy = {
+            "http": "http://" + self.clashControl.clash_host + ":" + self.clashControl.proxy_port,
+            "https": "http://" + self.clashControl.clash_host + ":" + self.clashControl.proxy_port
+        }
 
     def getPDFUrlsfromDB(self):
         db = self.client[self.database]
@@ -28,8 +36,8 @@ class PDFDownloader():
 
     def get_content(self, url):
         try:
-            user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"\
-                " Chrome/59.0.3071.109 Safari/537.36"
+            user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)" \
+                         " Chrome/59.0.3071.109 Safari/537.36"
             response = requests.get(url, headers={'User-Agent': user_agent})
             response.raise_for_status()  # 如果返回的状态码不是200， 则抛出异常;
             response.encoding = response.apparent_encoding  # 判断网页的编码格式， 便于respons.text知道如何解码;
@@ -79,9 +87,9 @@ class PDFDownloader():
         return
 
     def downloadFile(self, url, fileName):
-        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)"\
-            " Chrome/59.0.3071.109 Safari/537.36"
-        r = requests.get(url, headers={'User-Agent': user_agent}, stream=True)
+        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)" \
+                     " Chrome/59.0.3071.109 Safari/537.36"
+        r = requests.get(url, headers={'User-Agent': user_agent}, proxies=self.clash_proxy, stream=True)
         with open(fileName, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024):
                 if chunk:
@@ -90,6 +98,7 @@ class PDFDownloader():
 
     def downloadAll(self):
         pbar = tqdm(self.pdfUrls)
+        count = 0
         for pdfurl in pbar:
             try:
                 pbar.set_description("Crawling %s" % pdfurl)
@@ -98,6 +107,11 @@ class PDFDownloader():
                 print("Downloading: " + pdfurl + ", filename: " + fileName)
                 self.downloadFile(pdfurl, "./data/PDFs/" + fileName)
                 self.updateUrl(pdfurl, "/data/PDFs/" + fileName)
+                count = count + 1
+                if count > 10:
+                    if self.clashControl.changeRandomAvailableProxy():
+                        count = 0
+                        time.sleep(5)
             except Exception as e:
                 print("Error in " + pdfurl + ", info:", e)
                 continue

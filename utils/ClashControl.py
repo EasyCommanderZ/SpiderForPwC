@@ -36,10 +36,7 @@ class ClashControl:
         # print(raw_list)
         proxyList = []
         for proxyName in raw_list:
-            if (
-                    "IEPL" in proxyName or "IPLC" in proxyName or "PVCC" in proxyName
-                    or "多协议" in proxyName or "香港" in proxyName) \
-                    and ("游戏" not in proxyName):
+            if "美国" in proxyName:
                 proxyList.append(proxyName)
 
         # for proxyName in proxyList:
