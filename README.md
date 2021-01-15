@@ -21,7 +21,7 @@ PaperWithCode爬虫基于requests和beautifulsoup进行开发，能够爬取[Pap
     └── progress
 ```
 
-#### 工作模式：
+#### 工作模式
 
 1. 从https://portal.paperswithcode.com/ 可以得知，paperwithcode中的论文主要分为六类，分别是：Machine Learning, Computer Science, Physics, Mathematics, Astronomy, Statistics，他们各自有对应的二级域名，并且以url参数`/?page=x`来进行翻页操作，其中每页有10篇论文；
 2. 对第一步中的论文列表页进行解析，获取每篇文章的paper页面，并获取其Abstract地址，可以获得一个指向[arxiv.org](https://arxiv.org/) 域名下的页面，其上包括了该篇论文的所有详情；
@@ -43,6 +43,6 @@ python run.py
 
 爬虫基于`Python 3`开发，库依赖见`requirements.txt`。
 
-#### 分工：
+#### 分工
 
 - 张峄天：完成paperwithcode爬虫开发
